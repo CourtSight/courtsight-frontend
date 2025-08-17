@@ -144,7 +144,7 @@ const Index = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
               <h2 className="text-3xl font-bold text-foreground mb-6">
-                Why Legal Professionals Choose LexiScribe
+                Why Legal Professionals Choose CourtSight
               </h2>
               <div className="space-y-4">
                 {benefits.map((benefit, index) => (
@@ -182,7 +182,7 @@ const Index = () => {
             Ready to Transform Your Legal Practice?
           </h2>
           <p className="text-xl mb-8 opacity-90">
-            Join thousands of legal professionals who trust LexiScribe 
+            Join thousands of legal professionals who trust CourtSight 
             for their case analysis and research needs.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
