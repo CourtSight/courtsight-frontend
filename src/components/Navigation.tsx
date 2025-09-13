@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Scale, Mic, Search, Menu } from "lucide-react";
+import { Scale, Mic, Search, Menu, FileText } from "lucide-react";
 import { useState } from "react";
 
 const Navigation = () => {
@@ -45,6 +45,15 @@ const Navigation = () => {
             >
               <Search className="h-4 w-4" />
               <span>Search</span>
+            </Link>
+            <Link
+              to="/document"
+              className={`flex items-center space-x-1 text-sm font-medium transition-colors hover:text-primary ${
+                isActive("/document") ? "text-primary" : "text-muted-foreground"
+              }`}
+            >
+              <FileText className="h-4 w-4" />
+              <span>Documents</span>
             </Link>
             <Button variant="hero" size="sm">
               Get Started
@@ -95,6 +104,16 @@ const Navigation = () => {
               >
                 <Search className="h-4 w-4" />
                 <span>Search</span>
+              </Link>
+              <Link
+                to="/document"
+                className={`flex items-center space-x-1 text-sm font-medium transition-colors hover:text-primary ${
+                  isActive("/document") ? "text-primary" : "text-muted-foreground"
+                }`}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <FileText className="h-4 w-4" />
+                <span>Documents</span>
               </Link>
               <Button variant="hero" size="sm" className="w-full">
                 Get Started
