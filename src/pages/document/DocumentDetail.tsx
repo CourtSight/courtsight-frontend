@@ -30,7 +30,7 @@ export default function CourtSightPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br relative overflow-hidden">
       {/* Background Map Pattern */}
       <div className="absolute inset-0 opacity-10">
         <svg width="100%" height="100%" viewBox="0 0 1200 800" className="w-full h-full">
@@ -63,11 +63,6 @@ export default function CourtSightPage() {
 
       {/* Main Content */}
       <main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Page Title */}
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Deskripsi Putusan</h1>
-        </div>
-
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Content Area */}
           <div className="lg:col-span-2 space-y-6">
@@ -176,7 +171,7 @@ export default function CourtSightPage() {
 
           {/* Chatbot Sidebar */}
           <div className="lg:col-span-1">
-            <Card className="shadow-lg h-fit">
+            <Card className="shadow-lg h-fit sticky top-20">
               <CardHeader className="pb-4">
                 <div className="flex items-center space-x-2">
                   <MessageCircle className="w-5 h-5 text-blue-600" />

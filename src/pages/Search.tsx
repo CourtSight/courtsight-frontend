@@ -6,214 +6,60 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import Navigation from "@/components/Navigation";
 import ChatWidget from "@/components/ChatWidget";
-import { Search as SearchIcon, Filter, Calendar, FileText, ExternalLink, BookOpen, Stars } from "lucide-react";
+import { Search as SearchIcon, Filter, Calendar, FileText, ExternalLink, BookOpen, Stars, AlertCircle } from "lucide-react";
+import { searchService, documentService } from "@/lib/api";
+import type { SearchRequest, SearchResponse, SearchResult, SourceDocument } from "@/lib/api";
 
 const Search = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
+  const [searchResponse, setSearchResponse] = useState<SearchResponse | null>(null);
   const [isSearching, setIsSearching] = useState(false);
-  const [summary, setSummary] = useState("");
-
-  // Mock search results - Indonesian legal documents format
-  const mockResults = [
-    {
-      content: "warna hitam lalu dilakukan penimbangan dengan berat bersih 6,31 (enam koma tiga puluh satu) gram;\n- Berita Acara Pemeriksaan Laboratorium Kriminalistik Nomor:\n1626/NNF/2025 tanggal 19 Mei 2025 yang ditandatangani oleh pemeriksa 1. DEWI ARNI, MM. 2. YOGA RAMADI GUSTI, S.Si. 3. ABDILLAH ADAM\nS, S.Si dan diketahui oleh PS. KABIDLABFOR Polda Riau ERIK",
-      metadata: {
-        id: 4,
-        amar: "Lain-lain",
-        page: 21,
-        title: "",
-        author: "",
-        doc_id: "b841529d-6e0c-4b5d-97f1-b224da09536b",
-        format: "PDF 1.4",
-        source: "https://putusan3.mahkamahagung.go.id/direktori/download_file/86b1487326859a3d656e149d4f24f922/pdf/zaf0898f02ebded2832b313935393337",
-        creator: "",
-        modDate: "",
-        moddate: "",
-        subject: "",
-        trapped: "",
-        keywords: "",
-        link_pdf: "https://putusan3.mahkamahagung.go.id/direktori/download_file/86b1487326859a3d656e149d4f24f922/pdf/zaf0898f02ebded2832b313935393337",
-        link_zip: "https://putusan3.mahkamahagung.go.id/direktori/download_file/86b1487326859a3d656e149d4f24f922/zip/zaf0898f02ebded2832b313935393337",
-        panitera: "Panitera Pengganti: Iwan Uripno",
-        producer: "FPDF 1.81",
-        file_path: "https://putusan3.mahkamahagung.go.id/direktori/download_file/86b1487326859a3d656e149d4f24f922/pdf/zaf0898f02ebded2832b313935393337",
-        timestamp: "2025-09-07T19:37:50.389963",
-        kata_kunci: "Narkotika",
-        hakim_ketua: "Hakim Ketua Chandra Ramadhani",
-        jumlah_view: 6,
-        klasifikasi: "Pidana Khusus Narkotika dan Psikotropika Pidana Khusus Narkotika dan Psikotropika",
-        link_detail: "https://putusan3.mahkamahagung.go.id/direktori/putusan/zaf0898f02ebded2832b313935393337.html",
-        start_index: 0,
-        total_pages: 35,
-        amar_lainnya: "PIDANA PENJARA WAKTU TERTENTU",
-        creationDate: "D:20250909172916",
-        creationdate: "D:20250909172916",
-        hakim_anggota: "Hakim Anggota Syafariah Rizqa, Br Hakim Anggota Rivaldo Ganti Diolan Siahaan",
-        tahun_putusan: 2025,
-        tingkat_proses: "Pertama",
-        jumlah_download: 2,
-        tanggal_register: "22 Juli 2025",
-        lembaga_peradilan: "PN TEMBILAHAN",
-        tanggal_dibacakan: "4 September 2025",
-        tanggal_musyawarah: "4 September 2025",
-        jenis_lembaga_peradilan: "PN",
-        similarity_score: 0.972901689590862,
-        retrieval_strategy: "vector_search",
-        service_strategy: "vector_search",
-        service_query: "sanksi pidana korupsi"
-      },
-      score: 0.972901689590862
-    },
-    {
-      content: "Narkotika yang mana pasal ini tidak didakwakan, Terdakwa terbukti sebagai pemakai dan jumlahnya relatif kecil (SEMA Nomor 4 Tahun 2010), maka Hakim memutus sesuai surat dakwaan tetapi dapat menyimpangi ketentuan pidana minimum khusus dengan membuat pertimbangan yang cukup, dan ketentuan di dalam SEMA nomor 1 tahun 2017, yang mengatur bahwa: dalam hal terdakwa tidak tertangkap tangan sedang memakai narkotika dan pada terdakwa ditemukan barang bukti narkotika yang jumlahnya/beratnya relatif",
-      metadata: {
-        id: 6,
-        amar: "Lain-lain",
-        page: 28,
-        title: "",
-        author: "",
-        doc_id: "d922d102-8a9e-4d76-93b6-c2e05f67a655",
-        format: "PDF 1.4",
-        source: "https://putusan3.mahkamahagung.go.id/direktori/download_file/1e4871d466b40958f25d430a498d01f8/pdf/zaf0897ce0b49be08ef2313734393438",
-        creator: "",
-        modDate: "",
-        moddate: "",
-        subject: "",
-        trapped: "",
-        keywords: "",
-        link_pdf: "https://putusan3.mahkamahagung.go.id/direktori/download_file/1e4871d466b40958f25d430a498d01f8/pdf/zaf0897ce0b49be08ef2313734393438",
-        link_zip: "https://putusan3.mahkamahagung.go.id/direktori/download_file/1e4871d466b40958f25d430a498d01f8/zip/zaf0897ce0b49be08ef2313734393438",
-        panitera: "Panitera Pengganti Aminah",
-        producer: "FPDF 1.81",
-        file_path: "https://putusan3.mahkamahagung.go.id/direktori/download_file/1e4871d466b40958f25d430a498d01f8/pdf/zaf0897ce0b49be08ef2313734393438",
-        timestamp: "2025-09-07T19:38:10.906524",
-        kata_kunci: "Narkotika",
-        hakim_ketua: "Hakim Ketua Lis Susilowati",
-        jumlah_view: 10,
-        klasifikasi: "Pidana Khusus Narkotika dan Psikotropika Pidana Khusus Narkotika dan Psikotropika",
-        link_detail: "https://putusan3.mahkamahagung.go.id/direktori/putusan/zaf0897ce0b49be08ef2313734393438.html",
-        start_index: 272,
-        total_pages: 32,
-        amar_lainnya: "PIDANA PENJARA WAKTU TERTENTU",
-        creationDate: "D:20250909172946",
-        creationdate: "D:20250909172946",
-        hakim_anggota: "Br Hakim Anggota Mahendra Adhi Purwanta, Hakim Anggota Andika Bimantoro",
-        tahun_putusan: 2025,
-        tingkat_proses: "Pertama",
-        jumlah_download: 6,
-        tanggal_register: "25 Juni 2025",
-        lembaga_peradilan: "PN BOYOLALI",
-        tanggal_dibacakan: "4 September 2025",
-        tanggal_musyawarah: "4 September 2025",
-        jenis_lembaga_peradilan: "PN",
-        similarity_score: 0.982868452212609,
-        retrieval_strategy: "vector_search",
-        service_strategy: "vector_search",
-        service_query: "sanksi pidana korupsi"
-      },
-      score: 0.982868452212609
-    },
-    {
-      content: "Surat Edaran Mahkamah Agung Nomor 7 Tahun 2009 juncto Surat Edaran Mahkamah Agung Nomor 4 Tahun 2010) serta hasil tes urine terdakwa positif mengandung Metamphetamine, namun penuntut umum tidak mendakwakan Pasal 127 ayat (1) Undang-Undang Nomor 35 Tahun 2009 tentang Narkotika maka perbuatan Terdakwa tersebut dapat dikategorikan sebagai Penyalah Guna Narkotika Golongan I bagi diri sendiri sedangkan kualifikasi tindak pidananya tetap mengacu pada surat dakwaan",
-      metadata: {
-        id: 6,
-        amar: "Lain-lain",
-        page: 28,
-        title: "",
-        author: "",
-        doc_id: "d922d102-8a9e-4d76-93b6-c2e05f67a655",
-        format: "PDF 1.4",
-        source: "https://putusan3.mahkamahagung.go.id/direktori/download_file/1e4871d466b40958f25d430a498d01f8/pdf/zaf0897ce0b49be08ef2313734393438",
-        creator: "",
-        modDate: "",
-        moddate: "",
-        subject: "",
-        trapped: "",
-        keywords: "",
-        link_pdf: "https://putusan3.mahkamahagung.go.id/direktori/download_file/1e4871d466b40958f25d430a498d01f8/pdf/zaf0897ce0b49be08ef2313734393438",
-        link_zip: "https://putusan3.mahkamahagung.go.id/direktori/download_file/1e4871d466b40958f25d430a498d01f8/zip/zaf0897ce0b49be08ef2313734393438",
-        panitera: "Panitera Pengganti Aminah",
-        producer: "FPDF 1.81",
-        file_path: "https://putusan3.mahkamahagung.go.id/direktori/download_file/1e4871d466b40958f25d430a498d01f8/pdf/zaf0897ce0b49be08ef2313734393438",
-        timestamp: "2025-09-07T19:38:10.906524",
-        kata_kunci: "Narkotika",
-        hakim_ketua: "Hakim Ketua Lis Susilowati",
-        jumlah_view: 10,
-        klasifikasi: "Pidana Khusus Narkotika dan Psikotropika Pidana Khusus Narkotika dan Psikotropika",
-        link_detail: "https://putusan3.mahkamahagung.go.id/direktori/putusan/zaf0897ce0b49be08ef2313734393438.html",
-        start_index: 786,
-        total_pages: 32,
-        amar_lainnya: "PIDANA PENJARA WAKTU TERTENTU",
-        creationDate: "D:20250909172946",
-        creationdate: "D:20250909172946",
-        hakim_anggota: "Br Hakim Anggota Mahendra Adhi Purwanta, Hakim Anggota Andika Bimantoro",
-        tahun_putusan: 2025,
-        tingkat_proses: "Pertama",
-        jumlah_download: 6,
-        tanggal_register: "25 Juni 2025",
-        lembaga_peradilan: "PN BOYOLALI",
-        tanggal_dibacakan: "4 September 2025",
-        tanggal_musyawarah: "4 September 2025",
-        jenis_lembaga_peradilan: "PN",
-        similarity_score: 0.985037083887522,
-        retrieval_strategy: "vector_search",
-        service_strategy: "vector_search",
-        service_query: "sanksi pidana korupsi"
-      },
-      score: 0.985037083887522
-    }
-  ];
-
-  // Generate AI summary based on query
-  const generateSummary = (query) => {
-    const summaries = {
-      "sanksi pidana korupsi": "Berdasarkan pencarian dokumen hukum terkait sanksi pidana korupsi, ditemukan berbagai putusan pengadilan yang mengatur tentang hukuman pidana untuk tindak pidana korupsi. Sanksi pidana korupsi di Indonesia umumnya berupa pidana penjara dengan waktu tertentu sesuai dengan tingkat kerugian negara dan perbuatan yang dilakukan. Putusan-putusan ini menunjukkan konsistensi dalam penerapan hukum anti korupsi dan pentingnya pemberantasan korupsi dalam sistem peradilan Indonesia.",
-      "narkotika": "Hasil pencarian menunjukkan berbagai putusan pengadilan terkait tindak pidana narkotika yang mencakup penyalahgunaan, peredaran, dan kepemilikan narkotika. Putusan-putusan ini mengatur tentang sanksi pidana yang berbeda-beda tergantung pada jenis narkotika, jumlah yang ditemukan, dan peran pelaku dalam tindak pidana tersebut. Pengadilan menerapkan ketentuan Undang-Undang Nomor 35 Tahun 2009 tentang Narkotika dengan mempertimbangkan berbagai faktor seperti jumlah barang bukti dan kondisi terdakwa.",
-      "pidana": "Pencarian dokumen hukum terkait pidana menunjukkan berbagai jenis sanksi pidana yang diterapkan dalam sistem peradilan Indonesia, termasuk pidana penjara waktu tertentu, pidana denda, dan pidana lainnya. Putusan-putusan ini mencerminkan penerapan prinsip-prinsip hukum pidana yang adil dan proporsional sesuai dengan tingkat kesalahan dan dampak dari tindak pidana yang dilakukan."
-    };
-    
-    // Find matching summary or generate generic one
-    const lowerQuery = query.toLowerCase();
-    for (const [key, value] of Object.entries(summaries)) {
-      if (lowerQuery.includes(key)) {
-        return value;
-      }
-    }
-    
-    // Generic summary if no specific match
-    return `Berdasarkan pencarian dokumen hukum dengan kata kunci "${query}", ditemukan berbagai putusan pengadilan yang relevan dengan topik tersebut. Dokumen-dokumen ini mencakup berbagai aspek hukum yang berkaitan dengan pencarian Anda, termasuk sanksi pidana, prosedur peradilan, dan penerapan hukum yang konsisten dalam sistem peradilan Indonesia.`;
-  };
+  const [error, setError] = useState<string | null>(null);
 
   const handleSearch = async () => {
     if (!searchQuery.trim()) return;
     
     setIsSearching(true);
+    setError(null);
     
-    // Generate AI summary
-    const aiSummary = generateSummary(searchQuery);
-    setSummary(aiSummary);
-    
-    // Simulate API call
-    setTimeout(() => {
-      setSearchResults(mockResults);
+    try {
+      // Prepare search request
+      const searchRequest: SearchRequest = {
+        query: searchQuery,
+      };
+
+      // Call API search service
+      const response = await searchService.globalSearch(searchRequest);
+      
+      setSearchResponse(response);
+    } catch (error) {
+      console.error('Search error:', error);
+      setError('Terjadi kesalahan saat melakukan pencarian. Silakan coba lagi.');
+      setSearchResponse(null);
+      
+      // Fallback to mock data for development
+      if (process.env.NODE_ENV === 'development') {
+        console.log('Using mock data as fallback');
+        // You can add mock response here if needed
+      }
+    } finally {
       setIsSearching(false);
-    }, 1500);
+    }
   };
 
-  const handleKeyPress = (e) => {
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       handleSearch();
     }
   };
 
   // Clear summary when search query is cleared
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearchQuery(value);
     if (!value.trim()) {
-      setSummary("");
-      setSearchResults([]);
+      setSearchResponse(null);
+      setError(null);
     }
   };
 
@@ -244,33 +90,57 @@ const Search = () => {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="flex space-x-4">
-              <div className="flex-1">
-                <Input
-                  placeholder="Masukkan pertanyaan hukum Anda (contoh: 'sanksi pidana korupsi')"
-                  value={searchQuery}
-                  onChange={handleInputChange}
-                  onKeyPress={handleKeyPress}
-                  className="text-base"
-                />
+            <div className="space-y-4">
+              <div className="flex space-x-4">
+                <div className="flex-1">
+                  <Input
+                    placeholder="Masukkan pertanyaan hukum Anda (contoh: 'sanksi pidana korupsi')"
+                    value={searchQuery}
+                    onChange={handleInputChange}
+                    onKeyPress={handleKeyPress}
+                    className="text-base"
+                  />
+                </div>
+                <Button 
+                  onClick={handleSearch}
+                  disabled={isSearching || !searchQuery.trim()}
+                  variant="hero"
+                  size="lg"
+                >
+                  {isSearching ? "Mencari..." : "Cari"}
+                </Button>
+                <Button variant="outline" size="lg">
+                  <Filter className="h-4 w-4" />
+                </Button>
               </div>
-              <Button 
-                onClick={handleSearch}
-                disabled={isSearching || !searchQuery.trim()}
-                variant="hero"
-                size="lg"
-              >
-                {isSearching ? "Mencari..." : "Cari"}
-              </Button>
-              <Button variant="outline" size="lg">
-                <Filter className="h-4 w-4" />
-              </Button>
+              
             </div>
           </CardContent>
         </Card>
 
+        {/* Error Display */}
+        {error && (
+          <Card className="mb-8 shadow-md border-l-4 border-l-red-500">
+            <CardContent className="p-6">
+              <div className="flex items-start space-x-3">
+                <div className="flex-shrink-0">
+                  <AlertCircle className="h-5 w-5 text-red-500" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-lg font-semibold text-red-700 dark:text-red-400 mb-2">
+                    Error Pencarian
+                  </h3>
+                  <p className="text-red-600 dark:text-red-300">
+                    {error}
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
         {/* AI Summary Card */}
-        {summary && (
+        {searchResponse && searchResponse.results.length > 0 && (
           <Card className="mb-8 shadow-md border-l-4 border-l-blue-500">
             <CardContent className="p-6">
               <div className="flex items-start space-x-3">
@@ -286,10 +156,42 @@ const Search = () => {
                       <Stars className="h-3 w-3 mr-1" />
                       AI Generated
                     </Badge>
+                    <Badge variant="outline" className="text-xs">
+                      {Math.round(searchResponse.results[0].confidence_score * 100)}% confidence
+                    </Badge>
                   </div>
-                  <p className="text-muted-foreground leading-relaxed">
-                    {summary}
+                  <p className="text-muted-foreground leading-relaxed mb-4">
+                    {searchResponse.results[0].summary}
                   </p>
+                  
+                  {/* Key Points */}
+                  {searchResponse.results[0].key_points.length > 0 && (
+                    <div className="mt-4">
+                      <h4 className="font-semibold mb-2">Poin-Poin Kunci:</h4>
+                      <ul className="space-y-2">
+                        {searchResponse.results[0].key_points.map((point, index) => (
+                          <li key={index} className="flex items-start space-x-2">
+                            <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0" />
+                            <span className="text-sm text-muted-foreground">{point}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  
+                  {/* Legal Areas */}
+                  {searchResponse.results[0].legal_areas.length > 0 && (
+                    <div className="mt-4">
+                      <h4 className="font-semibold mb-2">Bidang Hukum:</h4>
+                      <div className="flex flex-wrap gap-2">
+                        {searchResponse.results[0].legal_areas.map((area, index) => (
+                          <Badge key={index} variant="outline" className="text-xs">
+                            {area}
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </CardContent>
@@ -297,11 +199,11 @@ const Search = () => {
         )}
 
         {/* Search Results */}
-        {searchResults.length > 0 && (
+        {searchResponse && searchResponse.results.length > 0 && (
           <div className="space-y-6">
             <div className="flex items-center justify-between">
               <h2 className="text-xl font-semibold">
-                Hasil Pencarian ({searchResults.length} dokumen ditemukan)
+                Dokumen Sumber ({searchResponse.results[0].source_documents.length} dokumen ditemukan)
               </h2>
               <div className="flex items-center space-x-2 text-sm text-muted-foreground">
                 <BookOpen className="h-4 w-4" />
@@ -310,30 +212,30 @@ const Search = () => {
             </div>
 
             <div className="grid gap-6">
-              {searchResults.map((result, index) => (
-                <Card key={result.metadata?.doc_id || index} className="shadow-sm hover:shadow-md transition-shadow duration-300">
+              {searchResponse.results[0].source_documents.map((document, index) => (
+                <Card key={index} className="shadow-sm hover:shadow-md transition-shadow duration-300">
                   <CardContent className="p-6">
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex-1">
                         <div className="flex items-center space-x-3 mb-2">
                           <h3 className="text-lg font-semibold text-primary">
-                            {result.metadata?.klasifikasi || "Dokumen Hukum"}
+                            {document.title}
                           </h3>
                           <Badge variant="outline" className="flex items-center space-x-1">
                             <Calendar className="h-3 w-3" />
-                            <span>{result.metadata?.tahun_putusan}</span>
+                            <span>{document.case_number || "N/A"}</span>
+                          </Badge>
+                          <Badge variant="secondary" className="text-xs">
+                            {Math.round(document.relevance_score * 100)}% relevansi
                           </Badge>
                         </div>
                         <div className="flex items-center space-x-4 text-sm text-muted-foreground mb-3">
-                          <span className="font-medium">{result.metadata?.lembaga_peradilan}</span>
+                          <span className="font-medium">Putusan Pengadilan</span>
                           <span>•</span>
-                          <span>{result.metadata?.amar_lainnya}</span>
+                          <span>{document.validation_status}</span>
                         </div>
                       </div>
                       <div className="flex items-center space-x-2">
-                        <Badge variant={result.score > 0.9 ? "default" : "secondary"}>
-                          {Math.round(result.score * 100)}% match
-                        </Badge>
                         <Button variant="outline" size="sm" asChild>
                           <Link to={`/document/${result.metadata?.id || index + 1}`}>
                             <FileText className="h-4 w-4 mr-1" />
@@ -341,7 +243,7 @@ const Search = () => {
                           </Link>
                         </Button>
                         <Button variant="ghost" size="sm" asChild>
-                          <a href={result.metadata?.link_detail} target="_blank" rel="noopener noreferrer">
+                          <a href={document.source} target="_blank" rel="noopener noreferrer">
                             <ExternalLink className="h-4 w-4" />
                           </a>
                         </Button>
@@ -349,61 +251,62 @@ const Search = () => {
                     </div>
 
                     <p className="text-muted-foreground mb-4 leading-relaxed">
-                      {result.content}
+                      {document.excerpt}
                     </p>
 
-                    {/* AI Summarizer Section */}
-                    <div className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950/20 dark:to-purple-950/20 rounded-lg p-4 mb-4 border border-blue-200 dark:border-blue-800">
-                      <div className="flex items-start space-x-3">
-                        <div className="flex-shrink-0">
-                          <div className="w-6 h-6 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-                            <Stars className="h-3 w-3 text-white" />
-                          </div>
-                        </div>
-                        <div className="flex-1">
-                          <div className="flex items-center space-x-2 mb-2">
-                            <h4 className="text-sm font-semibold text-foreground">Ringkasan Dokumen</h4>
-                            <Badge variant="secondary" className="text-xs px-2 py-0">
-                              <Stars className="h-2 w-2 mr-1" />
-                              AI
-                            </Badge>
-                          </div>
-                          <p className="text-sm text-muted-foreground leading-relaxed">
-                            {result.metadata?.kata_kunci === "Narkotika" 
-                              ? "Dokumen ini membahas tindak pidana narkotika dengan fokus pada penyalahgunaan dan peredaran narkotika. Putusan pengadilan menunjukkan penerapan sanksi pidana sesuai dengan ketentuan Undang-Undang Nomor 35 Tahun 2009 tentang Narkotika, dengan mempertimbangkan jenis dan jumlah narkotika yang ditemukan serta peran terdakwa dalam tindak pidana tersebut."
-                              : "Dokumen ini berisi putusan pengadilan yang mengatur tentang penerapan hukum pidana dalam kasus yang relevan dengan pencarian Anda. Putusan ini mencerminkan konsistensi dalam penerapan prinsip-prinsip hukum pidana dan memberikan gambaran tentang bagaimana pengadilan menangani kasus serupa dengan mempertimbangkan berbagai faktor hukum dan fakta-fakta yang terungkap dalam persidangan."
-                            }
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-
+                    {/* Legal Areas */}
                     <div className="flex flex-wrap gap-2 mb-4">
-                      <Badge variant="outline" className="text-xs">
-                        {result.metadata?.kata_kunci}
-                      </Badge>
-                      <Badge variant="outline" className="text-xs">
-                        {result.metadata?.tingkat_proses}
-                      </Badge>
-                      <Badge variant="outline" className="text-xs">
-                        {result.metadata?.tanggal_dibacakan}
+                      {document.legal_areas.map((area, areaIndex) => (
+                        <Badge key={areaIndex} variant="outline" className="text-xs">
+                          {area}
                         </Badge>
+                      ))}
+                      <Badge variant="outline" className="text-xs">
+                        {document.validation_status}
+                      </Badge>
                     </div>
 
                     <div className="text-xs text-muted-foreground">
                       <div className="flex items-center justify-between">
-                        <span>Hakim Ketua: {result.metadata?.hakim_ketua}</span>
-                        <span>Panitera: {result.metadata?.panitera}</span>
+                        <span>Relevansi: {Math.round(document.relevance_score * 100)}%</span>
+                        <span>Status: {document.validation_status}</span>
                       </div>
                     </div>
                   </CardContent>
                 </Card>
               ))}
             </div>
+            
+            {/* Metrics */}
+            {searchResponse.metrics && (
+              <Card className="mt-6">
+                <CardContent className="p-4">
+                  <h4 className="font-semibold mb-2">Metrik Pencarian</h4>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                    <div>
+                      <span className="text-muted-foreground">Waktu Query:</span>
+                      <div className="font-medium">{searchResponse.metrics.query_time.toFixed(2)}s</div>
+                    </div>
+                    <div>
+                      <span className="text-muted-foreground">Dokumen Ditemukan:</span>
+                      <div className="font-medium">{searchResponse.metrics.documents_retrieved}</div>
+                    </div>
+                    <div>
+                      <span className="text-muted-foreground">Total Hasil:</span>
+                      <div className="font-medium">{searchResponse.total_results}</div>
+                    </div>
+                    <div>
+                      <span className="text-muted-foreground">Cache Hit:</span>
+                      <div className="font-medium">{searchResponse.metrics.cache_hit ? "Ya" : "Tidak"}</div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
           </div>
         )}
 
-        {searchResults.length === 0 && searchQuery && !isSearching && (
+        {!searchResponse && searchQuery && !isSearching && (
           <Card className="text-center py-12">
             <CardContent>
               <FileText className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
@@ -415,7 +318,7 @@ const Search = () => {
           </Card>
         )}
 
-        {!searchQuery && searchResults.length === 0 && (
+        {!searchQuery && !searchResponse && (
           <Card className="text-center py-12">
             <CardContent>
               <SearchIcon className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
