@@ -1,8 +1,8 @@
 import axios, { AxiosInstance, InternalAxiosRequestConfig, AxiosResponse } from 'axios';
 
 // API Configuration
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
-const API_TIMEOUT = 30000; // 30 seconds
+export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
+const API_TIMEOUT = 60000; // 30 seconds
 
 // Create axios instance
 const apiClient: AxiosInstance = axios.create({
@@ -72,3 +72,13 @@ apiClient.interceptors.response.use(
 );
 
 export default apiClient;
+
+// Helper to build absolute API URLs (useful for fetch streaming calls)
+export const buildApiUrl = (path: string): string => {
+  if (!path) return API_BASE_URL;
+  const needsSlash = !API_BASE_URL.endsWith('/') && !path.startsWith('/');
+  const noDoubleSlash = API_BASE_URL.endsWith('/') && path.startsWith('/')
+    ? path.substring(1)
+    : path;
+  return needsSlash ? `${API_BASE_URL}/${path}` : `${API_BASE_URL}${noDoubleSlash.startsWith('/') ? '' : '/'}${noDoubleSlash}`;
+};

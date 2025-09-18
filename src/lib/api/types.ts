@@ -324,3 +324,18 @@ export interface UploadResponse {
   mimeType: string;
   url?: string;
 }
+
+// Chat Types
+export interface ChatStreamRequest {
+  message: string;
+  conversation_id?: string | null;
+  include_reasoning?: boolean;
+  max_tokens?: number;
+}
+
+export type ChatStreamEvent =
+  | { type: 'status'; message: string }
+  | { type: 'partial_response'; content: string }
+  | { type: 'final_response'; content: string }
+  | { type: 'complete'; conversation_id?: string; response_time: number; tools_used: unknown[]; workflow_used?: boolean }
+  | { type: 'error'; message: string };

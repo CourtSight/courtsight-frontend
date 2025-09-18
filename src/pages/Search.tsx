@@ -83,7 +83,7 @@ const Search = () => {
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
               <SearchIcon className="h-5 w-5" />
-              <span>Cari Putusan Pengadilan</span>
+              <span className="text-base">Cari Putusan Pengadilan</span>
             </CardTitle>
             <CardDescription>
               Masukkan pertanyaan hukum Anda untuk menemukan kasus dan preseden yang relevan
@@ -108,9 +108,6 @@ const Search = () => {
                   size="lg"
                 >
                   {isSearching ? "Mencari..." : "Cari"}
-                </Button>
-                <Button variant="outline" size="lg">
-                  <Filter className="h-4 w-4" />
                 </Button>
               </div>
               

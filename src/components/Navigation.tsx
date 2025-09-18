@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Scale, Mic, Search, Menu, FileText } from "lucide-react";
+import { Scale, Mic, Search, Menu, FileText, MessageSquare } from "lucide-react";
 import { useState } from "react";
 
 const Navigation = () => {
@@ -29,15 +29,6 @@ const Navigation = () => {
               Home
             </Link>
             <Link
-              to="/recorder"
-              className={`flex items-center space-x-1 text-sm font-medium transition-colors hover:text-primary ${
-                isActive("/recorder") ? "text-primary" : "text-muted-foreground"
-              }`}
-            >
-              <Mic className="h-4 w-4" />
-              <span>Recorder</span>
-            </Link>
-            <Link
               to="/search"
               className={`flex items-center space-x-1 text-sm font-medium transition-colors hover:text-primary ${
                 isActive("/search") ? "text-primary" : "text-muted-foreground"
@@ -47,17 +38,14 @@ const Navigation = () => {
               <span>Search</span>
             </Link>
             <Link
-              to="/document"
+              to="/chat"
               className={`flex items-center space-x-1 text-sm font-medium transition-colors hover:text-primary ${
-                isActive("/document") ? "text-primary" : "text-muted-foreground"
+                isActive("/chat") ? "text-primary" : "text-muted-foreground"
               }`}
             >
-              <FileText className="h-4 w-4" />
-              <span>Documents</span>
+              <MessageSquare className="h-4 w-4" />
+              <span>Chat</span>
             </Link>
-            <Button variant="hero" size="sm">
-              Get Started
-            </Button>
           </div>
 
           {/* Mobile menu button */}
@@ -106,14 +94,14 @@ const Navigation = () => {
                 <span>Search</span>
               </Link>
               <Link
-                to="/document"
+                to="/chat"
                 className={`flex items-center space-x-1 text-sm font-medium transition-colors hover:text-primary ${
-                  isActive("/document") ? "text-primary" : "text-muted-foreground"
+                  isActive("/chat") ? "text-primary" : "text-muted-foreground"
                 }`}
                 onClick={() => setIsMenuOpen(false)}
               >
-                <FileText className="h-4 w-4" />
-                <span>Documents</span>
+                <MessageSquare className="h-4 w-4" />
+                <span>Chat</span>
               </Link>
               <Button variant="hero" size="sm" className="w-full">
                 Get Started

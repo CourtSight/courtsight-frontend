@@ -1,4 +1,4 @@
-import apiClient from './config';
+import apiClient, { buildApiUrl } from './config';
 import { API_ENDPOINTS, HTTP_METHODS } from './endpoints';
 import type {
   ApiResponse,
@@ -24,6 +24,8 @@ import type {
   SearchResponse,
   SearchResult,
   UploadResponse,
+  ChatStreamRequest,
+  ChatStreamEvent,
 } from './types';
 
 // Authentication Services
@@ -294,6 +296,47 @@ export const searchService = {
   globalSearch: async (searchData: SearchRequest): Promise<SearchResponse> => {
     const response = await apiClient.post(API_ENDPOINTS.SEARCH.GLOBAL, searchData);
     return response.data;
+  },
+};
+
+// Chat Services
+export const chatService = {
+  // Streaming via Fetch API to keep ReadableStream (axios doesn't support streams in browser)
+  streamChat: async (
+    payload: ChatStreamRequest,
+    onEvent: (event: ChatStreamEvent) => void
+  ): Promise<void> => {
+    const res = await fetch(buildApiUrl(API_ENDPOINTS.CHAT.STREAM), {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(localStorage.getItem('authToken') ? { 'Authorization': `Bearer ${localStorage.getItem('authToken')}` } : {}),
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!res.ok || !res.body) {
+      throw new Error(`HTTP error! status: ${res.status}`);
+    }
+
+    const reader = res.body.getReader();
+    const decoder = new TextDecoder();
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      const chunk = decoder.decode(value);
+      const lines = chunk.split('\n');
+      for (const line of lines) {
+        if (line.startsWith('data: ')) {
+          try {
+            const data: ChatStreamEvent = JSON.parse(line.substring(6));
+            onEvent(data);
+          } catch (e) {
+            console.error('Error parsing SSE data:', e);
+          }
+        }
+      }
+    }
   },
 };
 

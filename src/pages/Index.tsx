@@ -3,7 +3,11 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import Navigation from "@/components/Navigation"
 import { Search, MessageSquare, FileText, Scale, Bot, ChevronRight } from "lucide-react"
-
+import lawyerImage from "@/assets/lawyer.jpg"
+import palu from "@/assets/palu.jpg"
+import patung from "@/assets/patung.jpg"
+import searchImage from "@/assets/search.png"
+import aseanImage from "@/assets/asean.png"
 export default function CourtSightLanding() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100">
@@ -12,7 +16,7 @@ export default function CourtSightLanding() {
       {/* Hero Section */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
-          <div className="w-full h-full bg-[url('/world-map-outline.png')] bg-center bg-no-repeat bg-contain"></div>
+          <div className="" style={{ backgroundImage: `url(${aseanImage})`, backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'contain' }}></div>
         </div>
 
         <div className="container mx-auto px-4 py-20 relative">
@@ -35,9 +39,6 @@ export default function CourtSightLanding() {
                 </Button>
                 <Button variant="outline" className="border-blue-200 bg-transparent">
                   Explore Features
-                  <span className="ml-2 bg-blue-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
-                    0
-                  </span>
                 </Button>
               </div>
 
@@ -45,13 +46,8 @@ export default function CourtSightLanding() {
                 <p className="text-sm text-gray-500">Powered by</p>
                 <div className="flex items-center space-x-2">
                   <div className="w-6 h-6 bg-gray-800 rounded-full"></div>
-                  <span className="text-sm font-medium">SEKOLAH</span>
+                  <span className="text-sm font-medium">SEA-Lion</span>
                 </div>
-              </div>
-
-              <div className="bg-white rounded-lg p-4 shadow-sm border">
-                <div className="text-2xl font-bold text-gray-900">1000+</div>
-                <div className="text-gray-600">Case Analyzed</div>
               </div>
             </div>
 
@@ -99,23 +95,51 @@ export default function CourtSightLanding() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-8 mb-20">
-            {[1, 2, 3].map((i) => (
-              <Card key={i} className="group hover:shadow-lg transition-shadow">
+              <Card key={1} className="group hover:shadow-lg transition-shadow">
                 <CardContent className="p-0">
                   <div className="aspect-video bg-gradient-to-br from-blue-100 to-blue-200 rounded-t-lg relative overflow-hidden">
                     <img
-                      src="/legal-professionals-in-courtroom.jpg"
+                      src={lawyerImage}
                       alt="Legal professionals"
                       className="w-full h-full object-cover"
                     />
                     <div className="absolute bottom-4 left-4 bg-white rounded-lg px-3 py-2 flex items-center space-x-2">
                       <FileText className="w-4 h-4 text-blue-600" />
-                      <span className="text-sm font-medium">Using Internal Document</span>
+                      <span className="text-sm font-medium">Retrieve AI Agent</span>
                     </div>
                   </div>
                 </CardContent>
               </Card>
-            ))}
+              <Card key={1} className="group hover:shadow-lg transition-shadow">
+                <CardContent className="p-0">
+                  <div className="aspect-video bg-gradient-to-br from-blue-100 to-blue-200 rounded-t-lg relative overflow-hidden">
+                    <img
+                      src={palu}
+                      alt="Legal professionals"
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute bottom-4 left-4 bg-white rounded-lg px-3 py-2 flex items-center space-x-2">
+                      <FileText className="w-4 h-4 text-blue-600" />
+                      <span className="text-sm font-medium">Retrieve AI Agent</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+              <Card key={1} className="group hover:shadow-lg transition-shadow">
+                <CardContent className="p-0">
+                  <div className="aspect-video bg-gradient-to-br from-blue-100 to-blue-200 rounded-t-lg relative overflow-hidden">
+                    <img
+                      src={searchImage}
+                      alt="Legal professionals"
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute bottom-4 left-4 bg-white rounded-lg px-3 py-2 flex items-center space-x-2">
+                      <FileText className="w-4 h-4 text-blue-600" />
+                      <span className="text-sm font-medium">Retrieve AI Agent</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
           </div>
         </div>
       </section>
@@ -150,33 +174,10 @@ export default function CourtSightLanding() {
               </Button>
             </div>
             <div className="aspect-video bg-gradient-to-br from-blue-100 to-blue-200 rounded-lg overflow-hidden">
-              <img src="/ai-search-interface-legal.jpg" alt="AI Search Interface" className="w-full h-full object-cover" />
+              <img src={searchImage} alt="AI Search Interface" className="w-full h-full object-cover" />
             </div>
           </div>
 
-          <div className="grid lg:grid-cols-2 gap-12">
-            <div className="aspect-video bg-gradient-to-br from-blue-100 to-blue-200 rounded-lg overflow-hidden">
-              <img src="/lawyer-client-recording-interface.jpg" alt="Recording Interface" className="w-full h-full object-cover" />
-            </div>
-            <div className="space-y-6">
-              <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
-                  <MessageSquare className="w-5 h-5 text-white" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold text-gray-900">Lawyer-Client Recording</h3>
-                </div>
-              </div>
-              <p className="text-gray-600">
-                Get intelligent insights, summaries, and legal case identification through secure recording
-                capabilities.
-              </p>
-              <Button className="bg-blue-600 hover:bg-blue-700">
-                Explore Features
-                <ChevronRight className="w-4 h-4 ml-2" />
-              </Button>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -282,7 +283,7 @@ export default function CourtSightLanding() {
             </div>
             <span className="text-xl font-bold">CourtSight</span>
           </div>
-          <p className="text-blue-200">©2023 Open Government Products</p>
+          <p className="text-blue-200">©2023 CourtSight Team</p>
         </div>
       </footer>
     </div>

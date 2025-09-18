@@ -88,6 +88,11 @@ export const API_ENDPOINTS = {
     GLOBAL: '/api/v1/search/',
   },
 
+  // Chat
+  CHAT: {
+    STREAM: '/api/v1/chat/stream',
+  },
+
   // Health & Status
   HEALTH: '/health',
   STATUS: '/status',
