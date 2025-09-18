@@ -2,7 +2,7 @@ import axios, { AxiosInstance, InternalAxiosRequestConfig, AxiosResponse } from 
 
 // API Configuration
 export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
-const API_TIMEOUT = 60000; // 30 seconds
+const API_TIMEOUT = 100000; // 30 seconds
 
 // Create axios instance
 const apiClient: AxiosInstance = axios.create({

@@ -1,7 +1,7 @@
 export const API_ENDPOINTS = {
   // Search
   SEARCH: {
-    GLOBAL: '/api/v1/search/',
+    GLOBAL: '/api/v1/search',
   },
   // Chat
   CHAT: {
