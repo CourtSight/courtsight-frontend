@@ -252,10 +252,10 @@ const Search = () => {
                       </div>
                       <div className="flex items-center space-x-2">
                         <Button variant="outline" size="sm" asChild>
-                          <Link to={`/document/${result.metadata?.id || index + 1}`}>
+                          {/* <Link> */}
                             <FileText className="h-4 w-4 mr-1" />
                             Details
-                          </Link>
+                          {/* </Link> */}
                         </Button>
                         <Button variant="ghost" size="sm" asChild>
                           <a href={document.source} target="_blank" rel="noopener noreferrer">
