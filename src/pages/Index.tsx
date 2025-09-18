@@ -2,14 +2,16 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import Navigation from "@/components/Navigation"
-import { Search, MessageSquare, FileText, Scale, Bot, ChevronRight } from "lucide-react"
+import { Search, MessageSquare, FileText, Scale, Bot, ChevronRight, Github, Linkedin, Mail, Twitter } from "lucide-react"
 import lawyerImage from "@/assets/lawyer.jpg"
 import palu from "@/assets/palu.jpg"
 import patung from "@/assets/patung.jpg"
 import sealion from "@/assets/sealion.png"
 import searchImage from "@/assets/search.png"
+import chatbotImage from "@/assets/chatbot.png"
 import aseanImage from "@/assets/asean.png"
 import ChatWidget from "@/components/ChatWidget"
+import { Input } from "@/components/ui/input"
 
 export default function CourtSightLanding() {
   return (
@@ -53,27 +55,27 @@ export default function CourtSightLanding() {
               </div>
             </div>
 
-            <div className="space-y-6">
-              <Card className="bg-white/90 backdrop-blur-sm">
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="font-semibold text-gray-900">Discover Court Rulings</h3>
-                    <Badge variant="secondary">For Professionals & Public</Badge>
-                  </div>
-                  <div className="space-y-3">
-                    <div className="flex items-center space-x-2">
-                      <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
-                      <span className="text-sm text-gray-600">Semantic search across Southeast Asia Supreme Court rulings</span>
-                    </div>
-                    <div className="bg-blue-50 rounded-lg p-3">
-                      <div className="text-sm font-medium text-blue-900 mb-2">AI Assistant</div>
-                      <div className="text-xs text-blue-700">Find similar rulings, key passages, and concise explanations in seconds.</div>
-                    </div>
-                    <Button size="sm" className="w-full bg-blue-600 hover:bg-blue-700">Start searching rulings</Button>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* About CourtSight */}
+      <section className="py-12 bg-white">
+        <div className="container mx-auto px-20">
+          <div className="max-w-4xl mx-auto text-center space-y-4">
+            <h2 className="text-3xl font-bold text-gray-900">About CourtSight</h2>
+            <p className="text-lg text-gray-700">
+              CourtSight makes law more inclusive and transparent for everyone—not just experts. Our AI‑powered platform
+              helps people across Southeast Asia quickly find and understand public Supreme Court rulings. Using
+              LLM‑based semantic search, it scans court decisions from multiple countries and delivers relevant results
+              in seconds.
+            </p>
+            <p className="text-lg text-gray-700">
+              We also provide realtime, LLM‑powered speech‑to‑text for client and witness meetings so lawyers can focus
+              on listening while the system transcribes, summarizes, and surfaces related rulings when needed. Built for
+              both B2B and B2C, CourtSight serves law firms, independent lawyers, students, journalists, and researchers—
+              turning unstructured documents into clear, searchable insights.
+            </p>
           </div>
         </div>
       </section>
@@ -88,51 +90,51 @@ export default function CourtSightLanding() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-8 mb-20">
-              <Card key={1} className="group hover:shadow-lg transition-shadow">
-                <CardContent className="p-0">
-                  <div className="aspect-video bg-gradient-to-br from-blue-100 to-blue-200 rounded-t-lg relative overflow-hidden">
-                    <img
-                      src={lawyerImage}
-                      alt="Legal professionals"
-                      className="w-full h-full object-cover"
-                    />
-                    <div className="absolute bottom-4 left-4 bg-white rounded-lg px-3 py-2 flex items-center space-x-2">
-                      <FileText className="w-4 h-4 text-blue-600" />
-                      <span className="text-sm font-medium">Semantic Search</span>
-                    </div>
+            <Card key={1} className="group hover:shadow-lg transition-shadow">
+              <CardContent className="p-0">
+                <div className="aspect-video bg-gradient-to-br from-blue-100 to-blue-200 rounded-t-lg relative overflow-hidden">
+                  <img
+                    src={lawyerImage}
+                    alt="Legal professionals"
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute bottom-4 left-4 bg-white rounded-lg px-3 py-2 flex items-center space-x-2">
+                    <FileText className="w-4 h-4 text-blue-600" />
+                    <span className="text-sm font-medium">Semantic Search</span>
                   </div>
-                </CardContent>
-              </Card>
-              <Card key={1} className="group hover:shadow-lg transition-shadow">
-                <CardContent className="p-0">
-                  <div className="aspect-video bg-gradient-to-br from-blue-100 to-blue-200 rounded-t-lg relative overflow-hidden">
-                    <img
-                      src={palu}
-                      alt="Legal professionals"
-                      className="w-full h-full object-cover"
-                    />
-                    <div className="absolute bottom-4 left-4 bg-white rounded-lg px-3 py-2 flex items-center space-x-2">
-                      <FileText className="w-4 h-4 text-blue-600" />
-                      <span className="text-sm font-medium">Rulings Explorer</span>
-                    </div>
+                </div>
+              </CardContent>
+            </Card>
+            <Card key={1} className="group hover:shadow-lg transition-shadow">
+              <CardContent className="p-0">
+                <div className="aspect-video bg-gradient-to-br from-blue-100 to-blue-200 rounded-t-lg relative overflow-hidden">
+                  <img
+                    src={palu}
+                    alt="Legal professionals"
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute bottom-4 left-4 bg-white rounded-lg px-3 py-2 flex items-center space-x-2">
+                    <FileText className="w-4 h-4 text-blue-600" />
+                    <span className="text-sm font-medium">Rulings Explorer</span>
                   </div>
-                </CardContent>
-              </Card>
-              <Card key={1} className="group hover:shadow-lg transition-shadow">
-                <CardContent className="p-0">
-                  <div className="aspect-video bg-gradient-to-br from-blue-100 to-blue-200 rounded-t-lg relative overflow-hidden">
-                    <img
-                      src={searchImage}
-                      alt="Legal professionals"
-                      className="w-full h-full object-cover"
-                    />
-                    <div className="absolute bottom-4 left-4 bg-white rounded-lg px-3 py-2 flex items-center space-x-2">
-                      <FileText className="w-4 h-4 text-blue-600" />
-                      <span className="text-sm font-medium">Realtime Transcription</span>
-                    </div>
+                </div>
+              </CardContent>
+            </Card>
+            <Card key={1} className="group hover:shadow-lg transition-shadow">
+              <CardContent className="p-0">
+                <div className="aspect-video bg-gradient-to-br from-blue-100 to-blue-200 rounded-t-lg relative overflow-hidden">
+                  <img
+                    src={searchImage}
+                    alt="Legal professionals"
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute bottom-4 left-4 bg-white rounded-lg px-3 py-2 flex items-center space-x-2">
+                    <FileText className="w-4 h-4 text-blue-600" />
+                    <span className="text-sm font-medium">Realtime Transcription</span>
                   </div>
-                </CardContent>
-              </Card>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>
@@ -154,7 +156,7 @@ export default function CourtSightLanding() {
                   <Search className="w-5 h-5 text-white" />
                 </div>
                 <div>
-              <h3 className="text-xl font-bold text-gray-900">LLM Semantic Search</h3>
+                  <h3 className="text-xl font-bold text-gray-900">LLM Semantic Search</h3>
                 </div>
               </div>
               <p className="text-gray-600">Scan public court decisions across countries and surface relevant rulings in seconds.</p>
@@ -168,24 +170,25 @@ export default function CourtSightLanding() {
             </div>
           </div>
           <div className="grid lg:grid-cols-2 gap-12 mb-20">
+          <div className="aspect-video bg-gradient-to-br from-blue-100 to-blue-200 rounded-lg overflow-hidden">
+              <img src={chatbotImage} alt="AI Search Interface" className="w-full h-full object-cover" />
+            </div>
             <div className="space-y-6">
               <div className="flex items-center space-x-3">
                 <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
                   <Search className="w-5 h-5 text-white" />
                 </div>
                 <div>
-              <h3 className="text-xl font-bold text-gray-900">LLM Semantic Search</h3>
+                  <h3 className="text-xl font-bold text-gray-900">AI Chatbot for Supreme Court Cases</h3>
                 </div>
               </div>
               <p className="text-gray-600">Scan public court decisions across countries and surface relevant rulings in seconds.</p>
               <Button className="bg-blue-600 hover:bg-blue-700">
-                Try Semantic Search
+                Try AI Chatbot
                 <ChevronRight className="w-4 h-4 ml-2" />
               </Button>
             </div>
-            <div className="aspect-video bg-gradient-to-br from-blue-100 to-blue-200 rounded-lg overflow-hidden">
-              <img src={searchImage} alt="AI Search Interface" className="w-full h-full object-cover" />
-            </div>
+
           </div>
         </div>
       </section>
@@ -193,21 +196,16 @@ export default function CourtSightLanding() {
       {/* Additional Features Grid */}
       <section className="py-20 bg-white">
         <div className="container mx-auto px-20">
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900">Future Features</h2>
+          </div>
+          <div className="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
             <Card className="text-center p-6">
               <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
                 <FileText className="w-6 h-6 text-white" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-2">Rulings Explorer</h3>
               <p className="text-gray-600 mb-4">Understand public Supreme Court decisions with clear, searchable insights.</p>
-            </Card>
-
-            <Card className="text-center p-6">
-              <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Search className="w-6 h-6 text-white" />
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Semantic Search</h3>
-              <p className="text-gray-600 mb-4">LLM-based retrieval of the most relevant passages across jurisdictions.</p>
             </Card>
 
             <Card className="text-center p-6">
@@ -227,7 +225,7 @@ export default function CourtSightLanding() {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
               <Badge variant="outline">Complete Cases in Seconds</Badge>
-              <h2 className="text-4xl font-bold text-gray-900">Powerful Features for Legal Professionals</h2>
+              <h2 className="text-4xl font-bold text-gray-900">Chatbot made it simple</h2>
               <p className="text-lg text-gray-600">
                 Streamline your legal workflow with cutting-edge AI technology designed specifically for attorneys and
                 legal teams.
@@ -265,11 +263,9 @@ export default function CourtSightLanding() {
                   </div>
 
                   <div className="flex items-center space-x-2 pt-4">
-                    <div className="flex-1 bg-gray-100 rounded-lg p-2">
-                      <div className="w-full h-8 bg-blue-200 rounded animate-pulse"></div>
-                    </div>
+                    <Input placeholder="Search Supreme Cases"/>
                     <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
-                      <Scale className="w-5 h-5 text-white" />
+                      <Search className="w-5 h-5 text-white" />
                     </div>
                   </div>
                 </div>
@@ -285,14 +281,58 @@ export default function CourtSightLanding() {
           <div className="w-full h-full bg-[url('/city-skyline-silhouette.jpg')] bg-bottom bg-no-repeat bg-cover"></div>
         </div>
 
-        <div className="container mx-auto px-4 py-12 relative">
-          <div className="flex items-center space-x-2 mb-4">
+        <div className="container mx-auto px-6 md:px-20 py-12 relative">
+          <div className="flex items-center space-x-2 mb-8">
             <div className="w-8 h-8 bg-white rounded flex items-center justify-center">
               <Scale className="w-5 h-5 text-blue-900" />
             </div>
             <span className="text-xl font-bold">CourtSight</span>
           </div>
-          <p className="text-blue-200">©2023 CourtSight Team</p>
+
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
+            <div>
+              <h4 className="font-semibold mb-3">Product</h4>
+              <ul className="space-y-2 text-blue-100">
+                <li><a href="/search" className="hover:underline">Semantic Search</a></li>
+                <li><a href="/chat" className="hover:underline">AI Assistant</a></li>
+                <li><a href="/recorder" className="hover:underline">Realtime Transcription</a></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-semibold mb-3">Resources</h4>
+              <ul className="space-y-2 text-blue-100">
+                <li><a href="/" className="hover:underline">Documentation</a></li>
+                <li><a href="/" className="hover:underline">API Reference</a></li>
+                <li><a href="/" className="hover:underline">Privacy & Terms</a></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-semibold mb-3">Company</h4>
+              <ul className="space-y-2 text-blue-100">
+                <li><a href="/" className="hover:underline">About</a></li>
+                <li><a href="/" className="hover:underline">Careers</a></li>
+                <li><a href="/" className="hover:underline">Contact</a></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-semibold mb-3">Stay in the loop</h4>
+              <p className="text-blue-100 text-sm mb-3">Get updates on new features and supported jurisdictions.</p>
+              <div className="flex gap-2">
+                <Input placeholder="Your email" className="bg-white/10 border-white/20 text-white placeholder:text-blue-200" />
+                <Button className="bg-white text-blue-900 hover:bg-blue-50">Subscribe</Button>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4 border-t border-white/10 pt-6">
+            <p className="text-blue-200 text-sm">© {new Date().getFullYear()} CourtSight. All rights reserved.</p>
+            <div className="flex items-center gap-4 text-blue-100">
+              <a href="mailto:hello@courtsight.ai" className="hover:text-white" aria-label="Email"><Mail className="w-5 h-5" /></a>
+              <a href="#" className="hover:text-white" aria-label="Twitter"><Twitter className="w-5 h-5" /></a>
+              <a href="#" className="hover:text-white" aria-label="LinkedIn"><Linkedin className="w-5 h-5" /></a>
+              <a href="#" className="hover:text-white" aria-label="GitHub"><Github className="w-5 h-5" /></a>
+            </div>
+          </div>
         </div>
       </footer>
       <ChatWidget />
