@@ -19,7 +19,7 @@ export default function CourtSightLanding() {
           <div className="" style={{ backgroundImage: `url(${aseanImage})`, backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'contain' }}></div>
         </div>
 
-        <div className="container mx-auto px-4 py-20 relative">
+        <div className="container mx-auto px-24 py-20 relative">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-8">
               <div className="space-y-4">
@@ -28,13 +28,13 @@ export default function CourtSightLanding() {
                 </h1>
                 <p className="text-lg text-gray-600 flex items-center">
                   <Bot className="w-5 h-5 mr-2 text-blue-600" />
-                  AI-Agent for smarter cases around Indonesia
+                  AI platform to find and understand public Supreme Court rulings across Southeast Asia
                 </p>
               </div>
 
               <div className="flex flex-wrap gap-3">
                 <Button className="bg-blue-600 hover:bg-blue-700">
-                  Analyze Public Cases
+                  Start Searching Rulings
                   <ChevronRight className="w-4 h-4 ml-2" />
                 </Button>
                 <Button variant="outline" className="border-blue-200 bg-transparent">
@@ -44,9 +44,15 @@ export default function CourtSightLanding() {
 
               <div className="space-y-2">
                 <p className="text-sm text-gray-500">Powered by</p>
+                <div className="flex gap-5">
                 <div className="flex items-center space-x-2">
                   <div className="w-6 h-6 bg-gray-800 rounded-full"></div>
                   <span className="text-sm font-medium">SEA-Lion</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <div className="w-6 h-6 bg-gray-800 rounded-full"></div>
+                  <span className="text-sm font-medium">Gemini AI</span>
+                </div>
                 </div>
               </div>
             </div>
@@ -55,23 +61,19 @@ export default function CourtSightLanding() {
               <Card className="bg-white/90 backdrop-blur-sm">
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="font-semibold text-gray-900">Analyze Legal Cases</h3>
-                    <Badge variant="secondary">For Lawyer</Badge>
+                    <h3 className="font-semibold text-gray-900">Discover Court Rulings</h3>
+                    <Badge variant="secondary">For Professionals & Public</Badge>
                   </div>
                   <div className="space-y-3">
                     <div className="flex items-center space-x-2">
                       <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
-                      <span className="text-sm text-gray-600">Search law cases around Indonesia</span>
+                      <span className="text-sm text-gray-600">Semantic search across Southeast Asia Supreme Court rulings</span>
                     </div>
                     <div className="bg-blue-50 rounded-lg p-3">
                       <div className="text-sm font-medium text-blue-900 mb-2">AI Assistant</div>
-                      <div className="text-xs text-blue-700">
-                        Berdasarkan data yang tersedia, kasus ini memiliki kesamaan dengan 15 kasus serupa di Indonesia.
-                      </div>
+                      <div className="text-xs text-blue-700">Find similar rulings, key passages, and concise explanations in seconds.</div>
                     </div>
-                    <Button size="sm" className="w-full bg-blue-600 hover:bg-blue-700">
-                      Start law cases around Indonesia
-                    </Button>
+                    <Button size="sm" className="w-full bg-blue-600 hover:bg-blue-700">Start searching rulings</Button>
                   </div>
                 </CardContent>
               </Card>
@@ -82,15 +84,12 @@ export default function CourtSightLanding() {
 
       {/* Features Section */}
       <section className="py-20 bg-white">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-20">
           <div className="text-center mb-16">
-            <Badge variant="outline" className="mb-4">
-              AI Agent for Law
-            </Badge>
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Powerful Features for Legal Professionals</h2>
+            <Badge variant="outline" className="mb-4">AI for Legal Transparency</Badge>
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Powerful Tools for Legal Professionals and the Public</h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Streamline your legal workflow with cutting-edge AI technology designed specifically for attorneys and
-              legal teams.
+              Make justice more accessible with LLM-powered search and realtime transcription tailored to Southeast Asia.
             </p>
           </div>
 
@@ -105,7 +104,7 @@ export default function CourtSightLanding() {
                     />
                     <div className="absolute bottom-4 left-4 bg-white rounded-lg px-3 py-2 flex items-center space-x-2">
                       <FileText className="w-4 h-4 text-blue-600" />
-                      <span className="text-sm font-medium">Retrieve AI Agent</span>
+                      <span className="text-sm font-medium">Semantic Search</span>
                     </div>
                   </div>
                 </CardContent>
@@ -120,7 +119,7 @@ export default function CourtSightLanding() {
                     />
                     <div className="absolute bottom-4 left-4 bg-white rounded-lg px-3 py-2 flex items-center space-x-2">
                       <FileText className="w-4 h-4 text-blue-600" />
-                      <span className="text-sm font-medium">Retrieve AI Agent</span>
+                      <span className="text-sm font-medium">Rulings Explorer</span>
                     </div>
                   </div>
                 </CardContent>
@@ -135,7 +134,7 @@ export default function CourtSightLanding() {
                     />
                     <div className="absolute bottom-4 left-4 bg-white rounded-lg px-3 py-2 flex items-center space-x-2">
                       <FileText className="w-4 h-4 text-blue-600" />
-                      <span className="text-sm font-medium">Retrieve AI Agent</span>
+                      <span className="text-sm font-medium">Realtime Transcription</span>
                     </div>
                   </div>
                 </CardContent>
@@ -146,13 +145,10 @@ export default function CourtSightLanding() {
 
       {/* Detailed Features */}
       <section className="py-20 bg-gray-50">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-20">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Powerful Features for Legal Professionals</h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Streamline your legal workflow with cutting-edge AI technology designed specifically for attorneys and
-              legal teams.
-            </p>
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Built for B2B and B2C</h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">Designed for law firms, independent lawyers, students, journalists, and researchers.</p>
           </div>
 
           <div className="grid lg:grid-cols-2 gap-12 mb-20">
@@ -162,14 +158,12 @@ export default function CourtSightLanding() {
                   <Search className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold text-gray-900">AI-Powered Search Engine</h3>
+              <h3 className="text-xl font-bold text-gray-900">LLM Semantic Search</h3>
                 </div>
               </div>
-              <p className="text-gray-600">
-                Get intelligent insights, summaries, and legal case identification with our advanced AI technology.
-              </p>
+              <p className="text-gray-600">Scan public court decisions across countries and surface relevant rulings in seconds.</p>
               <Button className="bg-blue-600 hover:bg-blue-700">
-                Explore Features
+                Try Semantic Search
                 <ChevronRight className="w-4 h-4 ml-2" />
               </Button>
             </div>
@@ -183,30 +177,30 @@ export default function CourtSightLanding() {
 
       {/* Additional Features Grid */}
       <section className="py-20 bg-white">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-20">
           <div className="grid md:grid-cols-3 gap-8">
             <Card className="text-center p-6">
               <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
                 <FileText className="w-6 h-6 text-white" />
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Putusan</h3>
-              <p className="text-gray-600 mb-4">Get intelligent insights, summaries, and legal case identification.</p>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">Rulings Explorer</h3>
+              <p className="text-gray-600 mb-4">Understand public Supreme Court decisions with clear, searchable insights.</p>
             </Card>
 
             <Card className="text-center p-6">
               <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Search className="w-6 h-6 text-white" />
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Search Engine Meet LLM</h3>
-              <p className="text-gray-600 mb-4">Get intelligent insights, summaries, and legal case identification.</p>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">Semantic Search</h3>
+              <p className="text-gray-600 mb-4">LLM-based retrieval of the most relevant passages across jurisdictions.</p>
             </Card>
 
             <Card className="text-center p-6">
               <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Bot className="w-6 h-6 text-white" />
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Search Engine Meet LLM</h3>
-              <p className="text-gray-600 mb-4">Get intelligent insights, summaries, and legal case identification.</p>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">Realtime Transcription</h3>
+              <p className="text-gray-600 mb-4">Focus on the conversation while AI transcribes and summarizes in realtime.</p>
             </Card>
           </div>
         </div>
@@ -214,7 +208,7 @@ export default function CourtSightLanding() {
 
       {/* Chat Interface Demo */}
       <section className="py-20 bg-gray-50">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-20">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
               <Badge variant="outline">Complete Cases in Seconds</Badge>

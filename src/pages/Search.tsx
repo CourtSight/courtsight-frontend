@@ -7,7 +7,8 @@ import { Badge } from "@/components/ui/badge";
 import Navigation from "@/components/Navigation";
 import ChatWidget from "@/components/ChatWidget";
 import { Search as SearchIcon, Filter, Calendar, FileText, ExternalLink, BookOpen, Stars, AlertCircle } from "lucide-react";
-import { searchService, documentService } from "@/lib/api";
+import { searchService } from "@/lib/api";
+import aseanImage from "@/assets/asean.png";
 import type { SearchRequest, SearchResponse, SearchResult, SourceDocument } from "@/lib/api";
 
 const Search = () => {
@@ -64,18 +65,27 @@ const Search = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
       <Navigation />
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-foreground mb-4">
-            Pencarian Dokumen Hukum Indonesia
+        <div className="relative overflow-hidden text-center mb-8">
+          <div className="absolute inset-0 opacity-10 pointer-events-none">
+            <div
+              className="w-full h-48"
+              style={{
+                backgroundImage: `url(${aseanImage})`,
+                backgroundPosition: "center",
+                backgroundRepeat: "no-repeat",
+                backgroundSize: "contain",
+              }}
+            ></div>
+          </div>
+          <div className="relative">
+          <h1 className="text-xl font-bold text-foreground mt-4">
+            Search Public Court Rulings
           </h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Cari melalui putusan pengadilan Indonesia menggunakan pencarian semantik berbasis AI 
-            untuk menemukan kasus dan preseden hukum yang relevan.
-          </p>
+          </div>
         </div>
 
         {/* Search Interface */}
@@ -83,10 +93,10 @@ const Search = () => {
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
               <SearchIcon className="h-5 w-5" />
-              <span className="text-base">Cari Putusan Pengadilan</span>
+              <span className="text-base">Search Court Rulings</span>
             </CardTitle>
             <CardDescription>
-              Masukkan pertanyaan hukum Anda untuk menemukan kasus dan preseden yang relevan
+              Enter a legal question to retrieve the most relevant public rulings and precedents
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -94,7 +104,7 @@ const Search = () => {
               <div className="flex space-x-4">
                 <div className="flex-1">
                   <Input
-                    placeholder="Masukkan pertanyaan hukum Anda (contoh: 'sanksi pidana korupsi')"
+                    placeholder="Type a legal question (e.g., 'legal basis for land dispute decisions')"
                     value={searchQuery}
                     onChange={handleInputChange}
                     onKeyPress={handleKeyPress}
@@ -107,7 +117,7 @@ const Search = () => {
                   variant="hero"
                   size="lg"
                 >
-                  {isSearching ? "Mencari..." : "Cari"}
+                  {isSearching ? "Searching..." : "Search"}
                 </Button>
               </div>
               
@@ -124,12 +134,8 @@ const Search = () => {
                   <AlertCircle className="h-5 w-5 text-red-500" />
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-lg font-semibold text-red-700 dark:text-red-400 mb-2">
-                    Error Pencarian
-                  </h3>
-                  <p className="text-red-600 dark:text-red-300">
-                    {error}
-                  </p>
+                  <h3 className="text-lg font-semibold text-red-700 dark:text-red-400 mb-2">Search Error</h3>
+                  <p className="text-red-600 dark:text-red-300">{error}</p>
                 </div>
               </div>
             </CardContent>
@@ -148,7 +154,7 @@ const Search = () => {
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center space-x-2 mb-2">
-                    <h3 className="text-lg font-semibold text-foreground">Ringkasan AI</h3>
+                    <h3 className="text-lg font-semibold text-foreground">AI Summary</h3>
                     <Badge variant="secondary" className="text-xs">
                       <Stars className="h-3 w-3 mr-1" />
                       AI Generated
@@ -164,7 +170,7 @@ const Search = () => {
                   {/* Key Points */}
                   {searchResponse.results[0].key_points.length > 0 && (
                     <div className="mt-4">
-                      <h4 className="font-semibold mb-2">Poin-Poin Kunci:</h4>
+                      <h4 className="font-semibold mb-2">Key Points:</h4>
                       <ul className="space-y-2">
                         {searchResponse.results[0].key_points.map((point, index) => (
                           <li key={index} className="flex items-start space-x-2">
@@ -179,7 +185,7 @@ const Search = () => {
                   {/* Legal Areas */}
                   {searchResponse.results[0].legal_areas.length > 0 && (
                     <div className="mt-4">
-                      <h4 className="font-semibold mb-2">Bidang Hukum:</h4>
+                      <h4 className="font-semibold mb-2">Legal Areas:</h4>
                       <div className="flex flex-wrap gap-2">
                         {searchResponse.results[0].legal_areas.map((area, index) => (
                           <Badge key={index} variant="outline" className="text-xs">
@@ -199,12 +205,10 @@ const Search = () => {
         {searchResponse && searchResponse.results.length > 0 && (
           <div className="space-y-6">
             <div className="flex items-center justify-between">
-              <h2 className="text-xl font-semibold">
-                Dokumen Sumber ({searchResponse.results[0].source_documents.length} dokumen ditemukan)
-              </h2>
+              <h2 className="text-xl font-semibold">Source Documents ({searchResponse.results[0].source_documents.length} found)</h2>
               <div className="flex items-center space-x-2 text-sm text-muted-foreground">
                 <BookOpen className="h-4 w-4" />
-                <span>Diurutkan berdasarkan relevansi</span>
+                <span>Sorted by relevance</span>
               </div>
             </div>
 
@@ -223,11 +227,11 @@ const Search = () => {
                             <span>{document.case_number || "N/A"}</span>
                           </Badge>
                           <Badge variant="secondary" className="text-xs">
-                            {Math.round(document.relevance_score * 100)}% relevansi
+                            {Math.round(document.relevance_score * 100)}% relevance
                           </Badge>
                         </div>
                         <div className="flex items-center space-x-4 text-sm text-muted-foreground mb-3">
-                          <span className="font-medium">Putusan Pengadilan</span>
+                          <span className="font-medium">Court Ruling</span>
                           <span>•</span>
                           <span>{document.validation_status}</span>
                         </div>
@@ -236,7 +240,7 @@ const Search = () => {
                         <Button variant="outline" size="sm" asChild>
                           <Link to={`/document/${result.metadata?.id || index + 1}`}>
                             <FileText className="h-4 w-4 mr-1" />
-                            Detail
+                            Details
                           </Link>
                         </Button>
                         <Button variant="ghost" size="sm" asChild>
@@ -265,7 +269,7 @@ const Search = () => {
 
                     <div className="text-xs text-muted-foreground">
                       <div className="flex items-center justify-between">
-                        <span>Relevansi: {Math.round(document.relevance_score * 100)}%</span>
+                        <span>Relevance: {Math.round(document.relevance_score * 100)}%</span>
                         <span>Status: {document.validation_status}</span>
                       </div>
                     </div>
@@ -278,23 +282,23 @@ const Search = () => {
             {searchResponse.metrics && (
               <Card className="mt-6">
                 <CardContent className="p-4">
-                  <h4 className="font-semibold mb-2">Metrik Pencarian</h4>
+                  <h4 className="font-semibold mb-2">Search Metrics</h4>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                     <div>
-                      <span className="text-muted-foreground">Waktu Query:</span>
+                      <span className="text-muted-foreground">Query Time:</span>
                       <div className="font-medium">{searchResponse.metrics.query_time.toFixed(2)}s</div>
                     </div>
                     <div>
-                      <span className="text-muted-foreground">Dokumen Ditemukan:</span>
+                      <span className="text-muted-foreground">Documents Retrieved:</span>
                       <div className="font-medium">{searchResponse.metrics.documents_retrieved}</div>
                     </div>
                     <div>
-                      <span className="text-muted-foreground">Total Hasil:</span>
+                      <span className="text-muted-foreground">Total Results:</span>
                       <div className="font-medium">{searchResponse.total_results}</div>
                     </div>
                     <div>
                       <span className="text-muted-foreground">Cache Hit:</span>
-                      <div className="font-medium">{searchResponse.metrics.cache_hit ? "Ya" : "Tidak"}</div>
+                      <div className="font-medium">{searchResponse.metrics.cache_hit ? "Yes" : "No"}</div>
                     </div>
                   </div>
                 </CardContent>
@@ -307,10 +311,8 @@ const Search = () => {
           <Card className="text-center py-12">
             <CardContent>
               <FileText className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-              <h3 className="text-lg font-semibold mb-2">Tidak ada hasil ditemukan</h3>
-              <p className="text-muted-foreground">
-                Coba perbaiki pertanyaan pencarian Anda atau gunakan kata kunci yang berbeda
-              </p>
+              <h3 className="text-lg font-semibold mb-2">No results found</h3>
+              <p className="text-muted-foreground">Refine your question or try different keywords</p>
             </CardContent>
           </Card>
         )}
@@ -319,10 +321,8 @@ const Search = () => {
           <Card className="text-center py-12">
             <CardContent>
               <SearchIcon className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-              <h3 className="text-lg font-semibold mb-2">Cari Putusan Pengadilan</h3>
-              <p className="text-muted-foreground">
-                Masukkan pertanyaan hukum di atas untuk menemukan putusan pengadilan dan preseden yang relevan
-              </p>
+              <h3 className="text-lg font-semibold mb-2">Search Court Rulings</h3>
+              <p className="text-muted-foreground">Enter a legal question above to find relevant rulings and precedents</p>
             </CardContent>
           </Card>
         )}
