@@ -1,16 +1,20 @@
 import Navigation from "@/components/Navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { chatService } from "@/lib/api";
 import type { ChatStreamEvent } from "@/lib/api";
-
+import aseanImage from "@/assets/asean.png";
+import { Bot, Lightbulb, Loader2, Send } from "lucide-react";
+// Loader2
 type StreamEvent = ChatStreamEvent;
 
 const Chat = () => {
   const [messages, setMessages] = useState<Array<{ role: "user" | "bot" | "status"; content: string }>>([]);
   const [input, setInput] = useState("");
+  const location = useLocation() as { state?: { message?: string } };
   const [isSending, setIsSending] = useState(false);
   const [conversationId, setConversationId] = useState<string | null>(() => localStorage.getItem("conversationId"));
 
@@ -32,7 +36,6 @@ const Chat = () => {
   const updateBotMessage = (content: string) => {
     setMessages(prev => {
       const next = [...prev];
-      // If last is bot, append; else create new bot message
       if (next.length > 0 && next[next.length - 1].role === "bot") {
         next[next.length - 1] = { role: "bot", content };
       } else {
@@ -166,20 +169,90 @@ const Chat = () => {
   useEffect(() => {
     if (messages.length === 0) {
       // Show helper preset button hint
-      addStatusMessage("Tip: click the example question below to auto-fill.");
+      addStatusMessage("Start Messaging with AI Agent");
+      addMessage("Hello im bot!","bot");
+      setTimeout(()=>{
+        addMessage("Try to ask something about supreme court cases in Indonesia",'bot');
+
+      },1000)
+
+    }
+    // If navigated with initial message from ChatWidget, seed and send
+    const initial = location?.state?.message;
+    if (initial) {
+      setInput(initial);
+      // fire-and-forget
+      setTimeout(() => {
+        // ensure state applied
+        setInput((curr) => {
+          const toSend = initial || curr;
+          if (toSend) {
+            addMessage(toSend, "user");
+            setInput("");
+            void (async () => {
+              try {
+                updateBotMessage("");
+                await chatService.streamChat(
+                  {
+                    message: toSend,
+                    conversation_id: conversationId ?? undefined,
+                    include_reasoning: true,
+                    max_tokens: 100,
+                  },
+                  (data) => {
+                    switch (data.type) {
+                      case "status":
+                        addStatusMessage(`🔄 ${data.message}`);
+                        break;
+                      case "partial_response":
+                        updateBotMessage(data.content);
+                        break;
+                      case "final_response":
+                        updateBotMessage(data.content);
+                        break;
+                      case "complete": {
+                        if (data.conversation_id && data.conversation_id !== conversationId) {
+                          setConversationId(data.conversation_id);
+                          localStorage.setItem("conversationId", data.conversation_id);
+                        }
+                        const metadata = `⏱️ ${data.response_time.toFixed(2)}s | 🔧 ${data.tools_used?.length ?? 0} tools | ${data.workflow_used ? "🔀 Workflow" : "🤖 Agent"}`;
+                        addStatusMessage(metadata);
+                        break;
+                      }
+                      case "error":
+                        updateBotMessage(`❌ Error: ${data.message}`);
+                        break;
+                    }
+                  }
+                );
+              } catch (err: any) {
+                console.error(err);
+                addMessage(`Error, try again with longer context`, "bot");
+              }
+            })();
+          }
+          return "";
+        });
+      }, 0);
     }
   }, []);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
       <Navigation />
-      <main className="max-w-4xl mx-auto px-4 py-6">
-        <Card>
-          <CardHeader>
-            <CardTitle>Interactive Chatbot</CardTitle>
+      {/* <div className="absolute inset-0 -z-10"> */}
+    <img src={aseanImage} alt="ASEAN" className="absolute inset-0 w-full h-full object-cover -z-10" />
+      {/* </div> */}
+      <main className="max-w-5xl mx-auto px-4 py-6 z-10">
+        <Card className="backdrop-blur-sm bg-white/90 shadow-lg">
+          <CardHeader className="border-b">
+            <CardTitle className="flex items-center gap-2">
+              <Bot className="w-5 h-5 text-blue-600" />
+              Supreme Court AI Assistant
+            </CardTitle>
           </CardHeader>
           <CardContent>
-            <div ref={listRef} className="space-y-3 max-h-[60vh] overflow-auto pr-1">
+            <div ref={listRef} className="space-y-4 max-h-[60vh] overflow-auto pr-1 py-4 scrollbar-thin scrollbar-thumb-gray-200">
               {messages.map((m, idx) => {
                 const isUser = m.role === "user";
                 const isStatus = m.role === "status";
@@ -189,42 +262,65 @@ const Chat = () => {
                   ? escapeHtml(m.content)
                   : renderMarkdown(m.content);
                 return (
-                  <div key={idx} className={isUser ? "text-right" : isStatus ? "text-center text-muted-foreground text-sm" : "text-left"}>
+                  <div key={idx} className={`flex ${isUser ? "justify-end" : isStatus ? "justify-center" : "justify-start"}`}>
                     <div
                       className={
                         isUser
-                          ? "inline-block rounded-lg bg-primary text-primary-foreground px-3 py-2"
+                          ? "max-w-[80%] rounded-2xl bg-blue-600 text-white px-4 py-2"
                           : isStatus
-                          ? "inline-block"
-                          : "inline-block rounded-lg bg-muted px-3 py-2 prose prose-sm max-w-none"
+                          ? "inline-flex items-center text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full"
+                          : "max-w-[80%] rounded-2xl bg-gray-100 px-4 py-2 prose prose-sm"
                       }
                       dangerouslySetInnerHTML={{ __html: contentHtml }}
                     />
                   </div>
                 );
               })}
+              {isSending && (
+                <div className="flex justify-start">
+                  <div className="max-w-[80%] rounded-2xl bg-gray-100 px-4 py-2">
+                    <div className="flex gap-1">
+                      <div className="w-2 h-2 rounded-full bg-gray-400 animate-bounce" style={{ animationDelay: "0ms" }}></div>
+                      <div className="w-2 h-2 rounded-full bg-gray-400 animate-bounce" style={{ animationDelay: "150ms" }}></div>
+                      <div className="w-2 h-2 rounded-full bg-gray-400 animate-bounce" style={{ animationDelay: "300ms" }}></div>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </CardContent>
-          <CardFooter className="flex flex-col gap-3">
-            <div className="w-full flex gap-2">
-              <Input
-                placeholder="Type your message..."
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" && !e.shiftKey) {
-                    e.preventDefault();
-                    handleSend();
-                  }
-                }}
-                disabled={isSending}
-              />
-              <Button onClick={handleSend} disabled={isSending || !input.trim()}>
-                {isSending ? "Sending..." : "Send"}
-              </Button>
-            </div>
-            <div className="w-full text-sm text-muted-foreground">
-              Example: <button className="underline" onClick={() => setInput(preset)}>{preset}</button>
+          <CardFooter className="border-t pt-4">
+            <div className="w-full space-y-3">
+              <div className="flex gap-2">
+                <Input
+                  className="rounded-full bg-gray-100 border-0 focus-visible:ring-blue-600"
+                  placeholder="Ask me anything about Supreme Court rulings..."
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && !e.shiftKey) {
+                      e.preventDefault();
+                      handleSend();
+                    }
+                  }}
+                  disabled={isSending}
+                />
+                <Button 
+                  className="rounded-full w-10 h-10 p-0 bg-blue-600 hover:bg-blue-700"
+                  onClick={handleSend} 
+                  disabled={isSending || !input.trim()}
+                >
+                  {isSending ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <Send className="h-4 w-4" />
+                  )}
+                </Button>
+              </div>
+              <div className="text-xs text-gray-500 flex items-center gap-2">
+                <Lightbulb className="w-3 h-3" />
+                Try asking: <button className="underline hover:text-blue-600" onClick={() => setInput(preset)}>{preset}</button>
+              </div>
             </div>
           </CardFooter>
         </Card>

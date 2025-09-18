@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -8,6 +9,7 @@ import { MessageCircle, Send, X, Bot, User } from "lucide-react";
 
 const ChatWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
   const [messages, setMessages] = useState([
     {
       id: 1,
@@ -20,28 +22,10 @@ const ChatWidget = () => {
 
   const handleSendMessage = () => {
     if (!newMessage.trim()) return;
-
-    const userMessage = {
-      id: messages.length + 1,
-      type: "user",
-      content: newMessage,
-      timestamp: new Date()
-    };
-
-    setMessages(prev => [...prev, userMessage]);
-    
-    // Simulate bot response
-    setTimeout(() => {
-      const botResponse = {
-        id: messages.length + 2,
-        type: "bot", 
-        content: "I understand you're looking for information about that topic. Let me search through the Supreme Court database and provide you with relevant cases and insights.",
-        timestamp: new Date()
-      };
-      setMessages(prev => [...prev, botResponse]);
-    }, 1000);
-
+    const message = newMessage.trim();
     setNewMessage("");
+    setIsOpen(false);
+    navigate("/chat", { state: { message } });
   };
 
   const handleKeyPress = (e) => {
@@ -85,7 +69,7 @@ const ChatWidget = () => {
               </Button>
             </div>
           </CardHeader>
-          
+
           <CardContent className="p-0 flex flex-col h-full">
             <ScrollArea className="flex-1 px-4">
               <div className="space-y-4 pb-4">
@@ -95,11 +79,10 @@ const ChatWidget = () => {
                     className={`flex ${message.type === "user" ? "justify-end" : "justify-start"}`}
                   >
                     <div
-                      className={`max-w-[80%] rounded-lg px-3 py-2 text-sm ${
-                        message.type === "user"
+                      className={`max-w-[80%] rounded-lg px-3 py-2 text-sm ${message.type === "user"
                           ? "bg-primary text-primary-foreground"
                           : "bg-muted text-muted-foreground"
-                      }`}
+                        }`}
                     >
                       <div className="flex items-start space-x-2">
                         {message.type === "bot" && (
@@ -114,27 +97,28 @@ const ChatWidget = () => {
                   </div>
                 ))}
               </div>
-            </ScrollArea>
-            
-            <div className="p-4 border-t">
-              <div className="flex space-x-2">
-                <Input
-                  placeholder="Ask about legal cases..."
-                  value={newMessage}
-                  onChange={(e) => setNewMessage(e.target.value)}
-                  onKeyPress={handleKeyPress}
-                  className="flex-1 text-sm"
-                />
-                <Button
-                  onClick={handleSendMessage}
-                  disabled={!newMessage.trim()}
-                  size="sm"
-                  variant="hero"
-                >
-                  <Send className="h-4 w-4" />
-                </Button>
+              <div className="p-4 border-t">
+                <div className="flex space-x-2">
+                  <Input
+                    placeholder="Ask about legal cases..."
+                    value={newMessage}
+                    onChange={(e) => setNewMessage(e.target.value)}
+                    onKeyPress={handleKeyPress}
+                    className="flex-1 text-sm"
+                  />
+                  <Button
+                    onClick={handleSendMessage}
+                    disabled={!newMessage.trim()}
+                    size="sm"
+                    variant="hero"
+                  >
+                    <Send className="h-4 w-4" />
+                  </Button>
+                </div>
               </div>
-            </div>
+            </ScrollArea>
+
+
           </CardContent>
         </Card>
       )}

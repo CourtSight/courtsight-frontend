@@ -6,8 +6,11 @@ import { Search, MessageSquare, FileText, Scale, Bot, ChevronRight } from "lucid
 import lawyerImage from "@/assets/lawyer.jpg"
 import palu from "@/assets/palu.jpg"
 import patung from "@/assets/patung.jpg"
+import sealion from "@/assets/sealion.png"
 import searchImage from "@/assets/search.png"
 import aseanImage from "@/assets/asean.png"
+import ChatWidget from "@/components/ChatWidget"
+
 export default function CourtSightLanding() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100">
@@ -15,8 +18,9 @@ export default function CourtSightLanding() {
 
       {/* Hero Section */}
       <section className="relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="" style={{ backgroundImage: `url(${aseanImage})`, backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'contain' }}></div>
+        <div className="absolute inset-0">
+          <img src={aseanImage} alt="ASEAN" className="w-full h-full object-cover" />
+          {/* <div className="" style={{ backgroundImage: `url(${aseanImage})`, backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'contain' }}></div> */}
         </div>
 
         <div className="container mx-auto px-24 py-20 relative">
@@ -27,7 +31,6 @@ export default function CourtSightLanding() {
                   <span className="text-blue-600">Law</span> should be inclusive and transparent for everyone
                 </h1>
                 <p className="text-lg text-gray-600 flex items-center">
-                  <Bot className="w-5 h-5 mr-2 text-blue-600" />
                   AI platform to find and understand public Supreme Court rulings across Southeast Asia
                 </p>
               </div>
@@ -44,15 +47,8 @@ export default function CourtSightLanding() {
 
               <div className="space-y-2">
                 <p className="text-sm text-gray-500">Powered by</p>
-                <div className="flex gap-5">
                 <div className="flex items-center space-x-2">
-                  <div className="w-6 h-6 bg-gray-800 rounded-full"></div>
-                  <span className="text-sm font-medium">SEA-Lion</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <div className="w-6 h-6 bg-gray-800 rounded-full"></div>
-                  <span className="text-sm font-medium">Gemini AI</span>
-                </div>
+                  <img src={sealion} alt="SEA-Lion" className="w-32 h-fit" />
                 </div>
               </div>
             </div>
@@ -87,10 +83,8 @@ export default function CourtSightLanding() {
         <div className="container mx-auto px-20">
           <div className="text-center mb-16">
             <Badge variant="outline" className="mb-4">AI for Legal Transparency</Badge>
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Powerful Tools for Legal Professionals and the Public</h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Make justice more accessible with LLM-powered search and realtime transcription tailored to Southeast Asia.
-            </p>
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Built for B2B and B2C</h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">Designed for law firms, independent lawyers, students, journalists, and researchers.</p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8 mb-20">
@@ -147,8 +141,10 @@ export default function CourtSightLanding() {
       <section className="py-20 bg-gray-50">
         <div className="container mx-auto px-20">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Built for B2B and B2C</h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">Designed for law firms, independent lawyers, students, journalists, and researchers.</p>
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Powerful Tools for Legal Professionals and the Public</h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Make justice more accessible with LLM-powered search and realtime transcription tailored to Southeast Asia.
+            </p>
           </div>
 
           <div className="grid lg:grid-cols-2 gap-12 mb-20">
@@ -171,7 +167,26 @@ export default function CourtSightLanding() {
               <img src={searchImage} alt="AI Search Interface" className="w-full h-full object-cover" />
             </div>
           </div>
-
+          <div className="grid lg:grid-cols-2 gap-12 mb-20">
+            <div className="space-y-6">
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
+                  <Search className="w-5 h-5 text-white" />
+                </div>
+                <div>
+              <h3 className="text-xl font-bold text-gray-900">LLM Semantic Search</h3>
+                </div>
+              </div>
+              <p className="text-gray-600">Scan public court decisions across countries and surface relevant rulings in seconds.</p>
+              <Button className="bg-blue-600 hover:bg-blue-700">
+                Try Semantic Search
+                <ChevronRight className="w-4 h-4 ml-2" />
+              </Button>
+            </div>
+            <div className="aspect-video bg-gradient-to-br from-blue-100 to-blue-200 rounded-lg overflow-hidden">
+              <img src={searchImage} alt="AI Search Interface" className="w-full h-full object-cover" />
+            </div>
+          </div>
         </div>
       </section>
 
@@ -280,6 +295,7 @@ export default function CourtSightLanding() {
           <p className="text-blue-200">©2023 CourtSight Team</p>
         </div>
       </footer>
+      <ChatWidget />
     </div>
   )
 }

@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import Navigation from "@/components/Navigation";
 import ChatWidget from "@/components/ChatWidget";
-import { Search as SearchIcon, Filter, Calendar, FileText, ExternalLink, BookOpen, Stars, AlertCircle } from "lucide-react";
+import { Search as SearchIcon, Filter, Calendar, FileText, ExternalLink, BookOpen, Stars, AlertCircle,Loader2 } from "lucide-react";
 import { searchService } from "@/lib/api";
 import aseanImage from "@/assets/asean.png";
 import type { SearchRequest, SearchResponse, SearchResult, SourceDocument } from "@/lib/api";
@@ -67,6 +67,9 @@ const Search = () => {
   return (
     <div className="min-h-screen">
       <Navigation />
+      <div className="absolute inset-0 -z-10">
+        <img src={aseanImage} alt="ASEAN" className="w-full h-full object-cover" />
+      </div>
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="relative overflow-hidden text-center mb-8">
@@ -116,8 +119,19 @@ const Search = () => {
                   disabled={isSearching || !searchQuery.trim()}
                   variant="hero"
                   size="lg"
+                  className="flex items-center gap-2"
                 >
-                  {isSearching ? "Searching..." : "Search"}
+                  {isSearching ? (
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      Searching...
+                    </>
+                  ) : (
+                    <>
+                      <SearchIcon className="h-4 w-4" />
+                      Search
+                    </>
+                  )}
                 </Button>
               </div>
               
@@ -307,7 +321,7 @@ const Search = () => {
           </div>
         )}
 
-        {!searchResponse && searchQuery && !isSearching && (
+        {/* {!searchResponse && searchQuery && !isSearching && (
           <Card className="text-center py-12">
             <CardContent>
               <FileText className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
@@ -315,9 +329,9 @@ const Search = () => {
               <p className="text-muted-foreground">Refine your question or try different keywords</p>
             </CardContent>
           </Card>
-        )}
+        )} */}
 
-        {!searchQuery && !searchResponse && (
+        {/* {!searchQuery && !searchResponse && (
           <Card className="text-center py-12">
             <CardContent>
               <SearchIcon className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
@@ -325,7 +339,7 @@ const Search = () => {
               <p className="text-muted-foreground">Enter a legal question above to find relevant rulings and precedents</p>
             </CardContent>
           </Card>
-        )}
+        )} */}
       </div>
 
       <ChatWidget />
