@@ -234,31 +234,25 @@ const Search = () => {
                       <div className="flex-1">
                         <div className="flex items-center space-x-3 mb-2">
                           <h3 className="text-lg font-semibold text-primary">
-                            {document.title}
+                            {document?.title}
                           </h3>
                           <Badge variant="outline" className="flex items-center space-x-1">
                             <Calendar className="h-3 w-3" />
                             <span>{document.case_number || "N/A"}</span>
                           </Badge>
                           <Badge variant="secondary" className="text-xs">
-                            {Math.round(document.relevance_score * 100)}% relevance
+                            {Math.round(document?.relevance_score * 100)}% relevance
                           </Badge>
                         </div>
                         <div className="flex items-center space-x-4 text-sm text-muted-foreground mb-3">
                           <span className="font-medium">Court Ruling</span>
                           <span>•</span>
-                          <span>{document.validation_status}</span>
+                          <span>{document?.validation_status}</span>
                         </div>
                       </div>
                       <div className="flex items-center space-x-2">
-                        <Button variant="outline" size="sm" asChild>
-                          {/* <Link> */}
-                            <FileText className="h-4 w-4 mr-1" />
-                            Details
-                          {/* </Link> */}
-                        </Button>
                         <Button variant="ghost" size="sm" asChild>
-                          <a href={document.source} target="_blank" rel="noopener noreferrer">
+                          <a href={document?.source} target="_blank" rel="noopener noreferrer">
                             <ExternalLink className="h-4 w-4" />
                           </a>
                         </Button>
@@ -266,25 +260,25 @@ const Search = () => {
                     </div>
 
                     <p className="text-muted-foreground mb-4 leading-relaxed">
-                      {document.excerpt}
+                      {document?.excerpt}
                     </p>
 
                     {/* Legal Areas */}
                     <div className="flex flex-wrap gap-2 mb-4">
-                      {document.legal_areas.map((area, areaIndex) => (
+                      {document?.legal_areas.map((area, areaIndex) => (
                         <Badge key={areaIndex} variant="outline" className="text-xs">
                           {area}
                         </Badge>
                       ))}
                       <Badge variant="outline" className="text-xs">
-                        {document.validation_status}
+                        {document?.validation_status}
                       </Badge>
                     </div>
 
                     <div className="text-xs text-muted-foreground">
                       <div className="flex items-center justify-between">
-                        <span>Relevance: {Math.round(document.relevance_score * 100)}%</span>
-                        <span>Status: {document.validation_status}</span>
+                        <span>Relevance: {Math.round(document?.relevance_score * 100)}%</span>
+                        <span>Status: {document?.validation_status}</span>
                       </div>
                     </div>
                   </CardContent>
